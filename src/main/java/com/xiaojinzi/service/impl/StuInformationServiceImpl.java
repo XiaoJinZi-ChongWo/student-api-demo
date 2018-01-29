@@ -6,6 +6,7 @@ import com.xiaojinzi.enums.ResultEnum;
 import com.xiaojinzi.exception.StuInformationException;
 import com.xiaojinzi.form.StudentForm;
 import com.xiaojinzi.repository.StuInformationRepository;
+import com.xiaojinzi.repository.dao.StuInformationDao;
 import com.xiaojinzi.service.StuInfomationService;
 import com.xiaojinzi.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 金全 wrj008
@@ -30,10 +32,23 @@ public class StuInformationServiceImpl implements StuInfomationService {
     @Autowired
     private StuInformationRepository repository;
 
+    @Autowired
+    private StuInformationDao stuInformationDao;
+
 
     @Override
     public Page<StuInformation> findAll(Pageable pageable) {
         return repository.findAll(pageable);
+    }
+
+    @Override
+    public Map<String, Object> findByCondition(Integer page, Integer size, String stuName, Integer minAge, Integer maxAge) {
+        return stuInformationDao.findByCondition(page, size, stuName, minAge, maxAge);
+    }
+
+    @Override
+    public StuInformation findByMbOne(String stuid) {
+        return stuInformationDao.findOne(stuid);
     }
 
     @Override

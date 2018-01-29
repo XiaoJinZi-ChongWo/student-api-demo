@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author 金全 wrj008
@@ -14,6 +15,7 @@ import java.util.List;
  */
 public interface StuInfomationService {
 
+    /** JPA操作 .*/
     /** 查询所有 .*/
     Page<StuInformation> findAll(Pageable pageable);
 
@@ -29,5 +31,18 @@ public interface StuInfomationService {
     /** 更新 .*/
     StuInformation update(StuInformation stuInformation);
 
+    /** 删除 .*/
     void delete(String stuid);
+
+
+    /** Mybatis操作 .*/
+    /** 查询单个 .*/
+    StuInformation findByMbOne(String stuid);
+
+    /** 多条件查询 .*/
+    Map<String,Object> findByCondition(Integer page,Integer size,String stuName,Integer minAge,Integer maxAge);
+
+
+
+
 }

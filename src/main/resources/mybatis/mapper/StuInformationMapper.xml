@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.xiaojinzi.repository.mapper.StuInformationMapper">
+
+    <resultMap id="stuInformationResult" type="com.xiaojinzi.dataobject.StuInformation">
+        <id column="stu_id" property="stuId"/>
+        <id column = "stu_name" property = "stuName"/>
+        <id column = "stu_sex" property = "stuSex" />
+        <id column = "stu_magor" property = "stuMagor" />
+        <id column = "stu_age" property = "stuAge" />
+        <id column = "stu_grade" property = "stuGrade" />
+        <id column = "stu_department" property = "stuDepartment" />
+        <id column = "stu_class" property = "stuClass" />
+    </resultMap>
+
+    <!--组合条件查询-->
+    <select id="findByCondition" resultMap="stuInformationResult" resultType="com.xiaojinzi.dataobject.StuInformation">
+        select * from stu_information where 1=1
+        <if test="stuName!=null">
+             and stu_name= #{stuName,jdbcType=VARCHAR}
+        </if>
+        <choose>
+            <when test="maxAge!=null">
+                <if test="minAge!=null">
+                    and stu_age BETWEEN #{minAge,jdbcType=BIGINT} AND #{maxAge,jdbcType=BIGINT}
+                </if>
+            </when>
+            <otherwise>
+                <if test="minAge!=null">
+                    and stu_age >= #{minAge,jdbcType=BIGINT}
+                </if>
+            </otherwise>
+        </choose>
+    </select>
+
+</mapper>

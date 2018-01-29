@@ -10,7 +10,9 @@ import com.xiaojinzi.utils.ResultVoUtil;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import jdk.nashorn.internal.runtime.logging.Logger;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -133,4 +135,33 @@ public class StuInfoController {
         return ResultVoUtil.success();
     }
 
+
+    /**
+     * mybatis 单个查询
+     * @param stuid
+     * @return
+     */
+    @GetMapping("/find/{stuid}")
+    public ResultVo findByMbOne(@PathVariable String stuid){
+        StuInformation result = stuInfomationService.findByMbOne(stuid);
+        return ResultVoUtil.success(result);
+    }
+
+    /**
+     * 多条件组合加分页
+     * @param page
+     * @param size
+     * @param stuName
+     * @param minAge
+     * @param maxAge
+     * @return
+     */
+    @GetMapping("/find/condition")
+    public ResultVo findByCondition(@RequestParam(name = "page",defaultValue = "1")Integer page
+            ,@RequestParam(name="size",defaultValue = "10") Integer size
+            ,@RequestParam(name="stuName",required = false)String stuName
+            ,@RequestParam(name="minAge",defaultValue = "1")Integer minAge,@RequestParam(name = "maxAge",required = false)Integer maxAge){
+        Map<String,Object> map = stuInfomationService.findByCondition(page,size,stuName,minAge,maxAge);
+        return ResultVoUtil.success(map.get("data"));
+    }
 }
